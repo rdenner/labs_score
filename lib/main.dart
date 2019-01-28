@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'foosball_page.dart';
 import 'table_tennis_page.dart';
+import 'app_data.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 void main() => runApp(LabsScore());
 
@@ -14,7 +13,7 @@ class LabsScore extends StatelessWidget {
         stream: FirebaseAuth.instance.onAuthStateChanged,
         builder: (BuildContext context, snapshot) {
           if (snapshot.hasData) {
-            print(snapshot.data.displayName);
+            print(snapshot.data.displayName + " logged in");
             return new HomePage();
           }
           return new LoginPage();
@@ -39,27 +38,13 @@ class LabsScore extends StatelessWidget {
 }
 
 class LoginPage extends StatefulWidget {
-  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
+  final AppData _appData = AppData();
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
-
-  void _authenticateWithGoogle() async {
-    final GoogleSignInAccount googleUser = await widget._googleSignIn.signIn();
-    final GoogleSignInAuthentication googleAuth =
-        await googleUser.authentication;
-    final AuthCredential credential = GoogleAuthProvider.getCredential(
-      idToken: googleAuth.idToken,
-      accessToken: googleAuth.accessToken,
-    );
-    final FirebaseUser user =
-        await widget._firebaseAuth.signInWithCredential(credential);
-
-    print(user.displayName);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,13 +55,13 @@ class _LoginPageState extends State<LoginPage> {
         body: Center(
           child: RaisedButton(
               child: Text("Sign in with Google"),
-              onPressed: _authenticateWithGoogle),
+              onPressed: widget._appData.authenticateWithGoogle),
         ));
   }
 }
 
 class HomePage extends StatefulWidget {
-  HomePage();
+  final AppData appData = AppData();
 
   @override
   _HomePageState createState() => _HomePageState();

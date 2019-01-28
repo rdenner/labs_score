@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class PlayerWidget extends StatefulWidget {
-  final Color _color;
+  final GoogleUserCircleAvatar _googleUserCircleAvatar;
 
-  PlayerWidget(this._color);
+  PlayerWidget(this._googleUserCircleAvatar);
 
   @override
   _PlayerWidgetState createState() => _PlayerWidgetState();
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
+
   void _increment() {
     setState(() {
       _score++;
@@ -43,7 +45,9 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               color: Colors.greenAccent,
               child: InkWell(
                 borderRadius: BorderRadius.circular(90.0),
-                child: Icon(Icons.person, size: 100.0, color: widget._color),
+                child: (widget._googleUserCircleAvatar == null)?
+                  Icon(Icons.person, size: 100.0, color: Colors.white):
+                    widget._googleUserCircleAvatar,
                 onTap: _increment,
                 onLongPress: _decrement,
               ),
