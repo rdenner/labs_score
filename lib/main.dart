@@ -8,17 +8,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 void main() => runApp(LabsScore());
 
 class LabsScore extends StatelessWidget {
-  Widget _handleCurrentScreen() {
-    return new StreamBuilder<FirebaseUser>(
-        stream: FirebaseAuth.instance.onAuthStateChanged,
-        builder: (BuildContext context, snapshot) {
-          if (snapshot.hasData) {
-            print(snapshot.data.displayName + " logged in");
-            return new HomePage();
-          }
-          return new LoginPage();
-        });
-  }
+  // Widget _handleCurrentScreen() {
+  //   return new FutureBuilder<FirebaseUser>(
+  //       future: AppData.appData.authenticateWithGoogle(),
+  //       builder: (BuildContext context, snapshot) {
+  //         if (snapshot.connectionState == ConnectionState.done) {
+  //           print(snapshot.data.displayName + " logged in");
+  //           return new HomePage();
+  //         }
+  //         else
+  //           return new LoginPage();
+  //       });
+  // }
 
   // This widget is the root of your application.
   @override
@@ -28,7 +29,19 @@ class LabsScore extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: _handleCurrentScreen(),
+      home: FutureBuilder<FirebaseUser>(
+        future: AppData.appData.authenticateWithGoogle(),
+        builder: (BuildContext context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            // print(snapshot.data.displayName + " logged in");
+            return new HomePage();
+          }
+          else
+            // return new LoginPage();
+            return CircularProgressIndicator(
+              //yeet
+            );
+        }),
       routes: {
         '/FoosballPage': (context) => FoosballPage(),
         '/TableTennisPage': (context) => TableTennisPage()

@@ -12,32 +12,40 @@ class AppData {
     //
   }
 
-  void signInWithGoogle() async {
+  Future signInWithGoogle() async {
     final GoogleSignIn _googleSignIn = GoogleSignIn();
     _googleUser = await _googleSignIn.signIn();
+    print('Current google user: ' + _googleUser.displayName);
   }
 
-  GoogleUserCircleAvatar getGoogleUserCircleAvatar() {
+  Future<GoogleUserCircleAvatar> getGoogleUserCircleAvatar() async {
     if (_googleUser == null) {
-      signInWithGoogle();
+      await signInWithGoogle();
     }
 
     return GoogleUserCircleAvatar(
       identity: _googleUser,
-      placeholderPhotoUrl: _googleUser.photoUrl,
+      // placeholderPhotoUrl: _googleUser.photoUrl,
     );
   }
 
-  void authenticateWithGoogle() async {
-    signInWithGoogle();
+  Future<Null> authenticateWithGoogle() async {
+    await signInWithGoogle();
     final GoogleSignInAuthentication googleAuth =
         await _googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
       idToken: googleAuth.idToken,
       accessToken: googleAuth.accessToken,
     );
-    final FirebaseUser user =
-        await _firebaseAuth.signInWithCredential(credential);
-    print(user.displayName + ' logged in');
+    final FirebaseUser user = await _firebaseAuth.signInWithCredential(credential);
+    print(user.displayName + ' logged in. GoogleUser: '+_googleUser.toString());
+
+    return null;
   }
+
+  String getGoogleUserName() {
+    return _googleUser.displayName;
+  }
+
+  GoogleSignInAccount get googleUserIdentity=>_googleUser;
 }
