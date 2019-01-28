@@ -8,19 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 void main() => runApp(LabsScore());
 
 class LabsScore extends StatelessWidget {
-  // Widget _handleCurrentScreen() {
-  //   return new FutureBuilder<FirebaseUser>(
-  //       future: AppData.appData.authenticateWithGoogle(),
-  //       builder: (BuildContext context, snapshot) {
-  //         if (snapshot.connectionState == ConnectionState.done) {
-  //           print(snapshot.data.displayName + " logged in");
-  //           return new HomePage();
-  //         }
-  //         else
-  //           return new LoginPage();
-  //       });
-  // }
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -30,46 +17,24 @@ class LabsScore extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       home: FutureBuilder<FirebaseUser>(
-        future: AppData.appData.authenticateWithGoogle(),
-        builder: (BuildContext context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            // print(snapshot.data.displayName + " logged in");
-            return new HomePage();
-          }
-          else
-            // return new LoginPage();
-            return CircularProgressIndicator(
-              //yeet
-            );
-        }),
+          future: AppData.appData.authenticateWithGoogle(),
+          builder: (BuildContext context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              // print(snapshot.data.displayName + " logged in");
+              return new HomePage();
+            } else
+              return Center(
+                child: SizedBox(
+                  width: 50.0, height: 50.0,
+                   child: CircularProgressIndicator(),
+                ),
+              );
+          }),
       routes: {
         '/FoosballPage': (context) => FoosballPage(),
         '/TableTennisPage': (context) => TableTennisPage()
       },
     );
-  }
-}
-
-class LoginPage extends StatefulWidget {
-  final AppData _appData = AppData();
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: Text('Login'),
-        ),
-        body: Center(
-          child: RaisedButton(
-              child: Text("Sign in with Google"),
-              onPressed: widget._appData.authenticateWithGoogle),
-        ));
   }
 }
 
