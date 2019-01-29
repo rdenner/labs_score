@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "713070862952",
-    "firebase_url": "https://labs-score.firebaseio.com",
-    "project_id": "labs-score",
-    "storage_bucket": "labs-score.appspot.com"
+    "project_number": "673139268006",
+    "firebase_url": "https://labs-score-958a7.firebaseio.com",
+    "project_id": "labs-score-958a7",
+    "storage_bucket": "labs-score-958a7.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:713070862952:android:4b230e4713ac900d",
+        "mobilesdk_app_id": "1:673139268006:android:4b230e4713ac900d",
         "android_client_info": {
           "package_name": "africa.enceladus.labsscore"
         }
       },
       "oauth_client": [
         {
-          "client_id": "713070862952-3afhrq897abiquov88nnpifu6gu5cljb.apps.googleusercontent.com",
+          "client_id": "673139268006-vf540n3p315ph4tuofgoosrgs3ta0hlj.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "africa.enceladus.labsscore",
@@ -23,13 +23,13 @@
           }
         },
         {
-          "client_id": "713070862952-4be15jcjjhsv814hsrf6selraghaj62h.apps.googleusercontent.com",
+          "client_id": "673139268006-dv3peum279rvuoqa6unvcv24l1ro6dr7.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDFXtsaliJFuIACLHi8hICGxUQY68wtH78"
+          "current_key": "AIzaSyCzh-9-Va3wQqbuloayG3QlXeZBz0AXW88"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "713070862952-4be15jcjjhsv814hsrf6selraghaj62h.apps.googleusercontent.com",
+              "client_id": "673139268006-dv3peum279rvuoqa6unvcv24l1ro6dr7.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
