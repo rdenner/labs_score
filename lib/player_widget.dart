@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:labs_score/app_data.dart';
 
 class PlayerWidget extends StatefulWidget {
-  final GoogleSignInAccount _googleUser;
+  final String _playerName;
+  final String _url;
   // final GoogleUserCircleAvatar _googleUserCircleAvatar;
 
-  PlayerWidget(this._googleUser);
+  PlayerWidget(this._playerName, this._url);
   // PlayerWidget(this._googleUserCircleAvatar);
 
   @override
@@ -14,7 +13,6 @@ class PlayerWidget extends StatefulWidget {
 }
 
 class _PlayerWidgetState extends State<PlayerWidget> {
-
   void _increment() {
     setState(() {
       _score++;
@@ -48,17 +46,13 @@ class _PlayerWidgetState extends State<PlayerWidget> {
               color: Colors.greenAccent,
               child: InkWell(
                 borderRadius: BorderRadius.circular(90.0),
-                child: (widget._googleUser == null)?
-                  Icon(Icons.person, size: 100.0, color: Colors.white):
-                    GoogleUserCircleAvatar(identity: widget._googleUser,),
+                child: (widget._url != null)
+                    ? Image.network(widget._url)
+                    : Image.asset("images/anonymous.svg", height: 100,),
                 onTap: _increment,
                 onLongPress: _decrement,
-              ),
-            )),
-          
-        Text(
-          (widget._googleUser == null)? 'Anonymous' : widget._googleUser.displayName
-        ),
+              ))),
+        Text((widget._playerName == null) ? 'Anonymous' : widget._playerName),
         Text(
           _score.toString(),
           style: TextStyle(fontSize: 50.0),

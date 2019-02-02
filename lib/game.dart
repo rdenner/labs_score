@@ -13,12 +13,11 @@ class Game extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            PlayerWidget(_appData.googleUserIdentity),
-            // PlayerWidget(_appData.getGoogleUserCircleAvatar()),
+            PlayerWidget(_appData.getGoogleUserName(), _appData.getGoogleUserUrl()),
             Padding(
               padding: EdgeInsets.only(left: 20.0, right: 20.0),
             ),
-            PlayerWidget(null),
+            PlayerWidget(null, null),
           ],
         ));
   }

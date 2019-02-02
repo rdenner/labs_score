@@ -19,17 +19,6 @@ class AppData {
     print('Current google user: ' + _googleUser.displayName);
   }
 
-  Future<GoogleUserCircleAvatar> getGoogleUserCircleAvatar() async {
-    if (_googleUser == null) {
-      await signInWithGoogle();
-    }
-
-    return GoogleUserCircleAvatar(
-      identity: _googleUser,
-      // placeholderPhotoUrl: _googleUser.photoUrl,
-    );
-  }
-
   Future<Null> authenticateWithGoogle() async {
     await signInWithGoogle();
     final GoogleSignInAuthentication googleAuth =
@@ -48,5 +37,7 @@ class AppData {
     return _googleUser.displayName;
   }
 
-  GoogleSignInAccount get googleUserIdentity=>_googleUser;
+  String getGoogleUserUrl() {
+    return _googleUser.photoUrl;
+  }
 }
