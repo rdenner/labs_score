@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'foosball_page.dart';
 import 'table_tennis_page.dart';
 import 'app_data.dart';
+import 'user.dart';
 
 void main() => runApp(LabsScore());
 
