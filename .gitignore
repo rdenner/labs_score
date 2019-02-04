@@ -3,3 +3,7 @@ build/
 pubspec.lock
 .flutter-plugins
 .packages
+android/local.properties
+android/app/src
+android/.gradle
+ios
