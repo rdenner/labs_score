@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 import 'foosball_page.dart';
 import 'table_tennis_page.dart';
 import 'app_data.dart';
-
-import 'package:firebase_auth/firebase_auth.dart';
+import 'user_list.dart';
 
 void main() => runApp(LabsScore());
 
@@ -60,27 +61,29 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Labs Score'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            RaisedButton(
-              shape: StadiumBorder(side: BorderSide(width: 2.0)),
-              child: Text("Foosball"),
-              onPressed: openFoosball,
-              color: Colors.blue,
-              textColor: Colors.white,
-            ),
-            RaisedButton(
-              shape: StadiumBorder(side: BorderSide(width: 2.0)),
-              child: Text("Table Tennis"),
-              onPressed: openTableTennis,
-              color: Colors.blue,
-              textColor: Colors.white,
-            )
-          ],
-        ),
-      ),
+      body: UserList()
+
+      // Center(
+      //   child: Column(
+      //     mainAxisAlignment: MainAxisAlignment.center,
+      //     children: <Widget>[
+      //       RaisedButton(
+      //         shape: StadiumBorder(side: BorderSide(width: 2.0)),
+      //         child: Text("Foosball"),
+      //         onPressed: openFoosball,
+      //         color: Colors.blue,
+      //         textColor: Colors.white,
+      //       ),
+      //       RaisedButton(
+      //         shape: StadiumBorder(side: BorderSide(width: 2.0)),
+      //         child: Text("Table Tennis"),
+      //         onPressed: openTableTennis,
+      //         color: Colors.blue,
+      //         textColor: Colors.white,
+      //       )
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
