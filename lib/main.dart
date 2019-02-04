@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'foosball_page.dart';
 import 'table_tennis_page.dart';
 import 'app_data.dart';
-import 'user_list.dart';
 
 void main() => runApp(LabsScore());
 
@@ -17,17 +16,20 @@ class LabsScore extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: FutureBuilder<FirebaseUser>(
-          future: AppData.appData.authenticateWithGoogle(),
+      home: FutureBuilder<User>(
+          future: AppData.appData.authenticateWithGoogle()
+            ..then((user) {
+              AppData.appData.addUserToDb(user);
+            }),
           builder: (BuildContext context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              // print(snapshot.data.displayName + " logged in");
               return new HomePage();
             } else
               return Center(
                 child: SizedBox(
-                  width: 50.0, height: 50.0,
-                   child: CircularProgressIndicator(),
+                  width: 50.0,
+                  height: 50.0,
+                  child: CircularProgressIndicator(),
                 ),
               );
           }),
@@ -61,29 +63,27 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Labs Score'),
       ),
-      body: UserList()
-
-      // Center(
-      //   child: Column(
-      //     mainAxisAlignment: MainAxisAlignment.center,
-      //     children: <Widget>[
-      //       RaisedButton(
-      //         shape: StadiumBorder(side: BorderSide(width: 2.0)),
-      //         child: Text("Foosball"),
-      //         onPressed: openFoosball,
-      //         color: Colors.blue,
-      //         textColor: Colors.white,
-      //       ),
-      //       RaisedButton(
-      //         shape: StadiumBorder(side: BorderSide(width: 2.0)),
-      //         child: Text("Table Tennis"),
-      //         onPressed: openTableTennis,
-      //         color: Colors.blue,
-      //         textColor: Colors.white,
-      //       )
-      //     ],
-      //   ),
-      // ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            RaisedButton(
+              shape: StadiumBorder(side: BorderSide(width: 2.0)),
+              child: Text("Foosball"),
+              onPressed: openFoosball,
+              color: Colors.blue,
+              textColor: Colors.white,
+            ),
+            RaisedButton(
+              shape: StadiumBorder(side: BorderSide(width: 2.0)),
+              child: Text("Table Tennis"),
+              onPressed: openTableTennis,
+              color: Colors.blue,
+              textColor: Colors.white,
+            )
+          ],
+        ),
+      ),
     );
   }
 }
