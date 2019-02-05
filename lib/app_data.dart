@@ -58,6 +58,12 @@ class AppData {
         .snapshots();
   }
 
+  Stream<QuerySnapshot> getUsersFromDb() {
+    return Firestore.instance
+        .collection("users")
+        .snapshots();
+  }
+
   Future<void> addUserToDb(User user) async {
     print("Add user " + user.name);
     Stream<QuerySnapshot> snapshots = AppData.appData.getUserFromDb(user.uid);

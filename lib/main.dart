@@ -15,7 +15,11 @@ class LabsScore extends StatelessWidget {
     return MaterialApp(
       title: 'Labs Score',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.blue[900],// lightBlue[800],
+        accentColor: Colors.redAccent,
+        primaryColorDark: Colors.blue[900],
+        primaryColorLight: Colors.lightBlue[500],
+        backgroundColor: Colors.lightBlue[800]
       ),
       home: FutureBuilder<User>(
           future: AppData.appData.authenticateWithGoogle()
@@ -50,6 +54,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
   void openFoosball() {
     Navigator.pushNamed(context, '/FoosballPage');
   }
@@ -64,27 +69,61 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: Text('Labs Score'),
       ),
-      body: Center(
-        child: Column(
+      backgroundColor: Theme.of(context).backgroundColor,
+      body:
+      Stack(
+        children: <Widget>[
+          StreamBuilder<QuerySnapshot>(
+            stream: Firestore.instance.collection('matches').snapshots(),
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              return new ListView(
+                children: snapshot.data.documents.map((DocumentSnapshot document) {
+                return new ListTile(
+                  title: new Text(document['teams'].toString()),
+                  // subtitle: new Text(document['email']),
+                );
+              }).toList(),
+            );
+            }
+          ),
+          
+      
+      Center(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            RaisedButton(
-              shape: StadiumBorder(side: BorderSide(width: 2.0)),
-              child: Text("Foosball"),
-              onPressed: openFoosball,
-              color: Colors.blue,
-              textColor: Colors.white,
+            SizedBox(
+              width: MediaQuery.of(context).size.width/2,
+              height: MediaQuery.of(context).size.height/2,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(45.0),
+                splashColor: Theme.of(context).accentColor,
+                onTap: openFoosball,
+                child: Image.asset(
+                  "images/foos.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
             ),
-            RaisedButton(
-              shape: StadiumBorder(side: BorderSide(width: 2.0)),
-              child: Text("Table Tennis"),
-              onPressed: openTableTennis,
-              color: Colors.blue,
-              textColor: Colors.white,
-            )
+            SizedBox(
+              width: MediaQuery.of(context).size.width/2,
+              height: MediaQuery.of(context).size.height/2,
+              child: InkWell(
+                borderRadius: BorderRadius.circular(45.0),
+                splashColor: Theme.of(context).accentColor,
+                onTap: openTableTennis,
+                child: Image.asset(
+                  "images/pong.png",
+                  fit: BoxFit.contain,
+                ),
+              ),
+            ),
           ],
         ),
       ),
+      
+        ],
+      ) 
     );
   }
 }

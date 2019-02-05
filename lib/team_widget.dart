@@ -3,14 +3,18 @@ import 'user.dart';
 
 class TeamWidget extends StatefulWidget {
   final List<User> _players;
+  bool _start;
+  final String _teamName;
 
-  TeamWidget(this._players);
+  TeamWidget(this._teamName, this._players, this._start);
 
   @override
   _TeamWidgetState createState() => _TeamWidgetState();
 }
 
 class _TeamWidgetState extends State<TeamWidget> {
+  int _score;
+
   void _increment() {
     setState(() {
       _score++;
@@ -31,46 +35,90 @@ class _TeamWidgetState extends State<TeamWidget> {
     _score = 0;
   }
 
-  int _score;
+  @override
+  Widget build(BuildContext context) {
+    List<Widget> players = widget._players.map((player) {
+        return PlayerWidget(player);
+      }
+    ).toList();
+    
+    Widget card;
+    
+    if (!widget._start) {
+      players.add(AddPlayerWidget());
+      
+      card = Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Row(
+      children: <Widget>[
+        Text(widget._teamName),
+      ],
+    ),
+              Column(children: players,),
+            ]
+          )
+      );
+    }
+    else {
+      card = InkWell(
+        child: Card(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[Row(
+      children: <Widget>[
+        Text(widget._teamName),
+        Text(
+          _score.toString(),
+          style: TextStyle(fontSize: 50.0),
+        ),
+      ],
+    ),
+              Column(children: players,),
+            ]
+          )
+        ),
+        onTap: _increment,
+        onLongPress: _decrement,
+      );
+    }
+
+    return Material(
+      color: Colors.greenAccent,
+      child: card
+    );
+  }
+}
+
+class PlayerWidget extends StatelessWidget {
+  final User _player;
+
+  PlayerWidget(this._player);
 
   @override
   Widget build(BuildContext context) {
-    Column players = Column(
-        children: (widget._players.isEmpty)
-            ? <Widget>[
-                Column(children: <Widget>[
-                  CircleAvatar(
-                      radius: 50.0,
-                      backgroundImage: AssetImage("images/anonymous.svg")),
-                  Text("Anonymous", style: TextStyle(color: Colors.black)),
-                ])
-              ]
-            : widget._players.map((player) {
-                return Column(children: <Widget>[
-                  CircleAvatar(
-                      radius: 50.0,
-                      backgroundImage: NetworkImage(player.photoUrl)),
-                  Text(player.name, style: TextStyle(color: Colors.black)),
-                ]);
-              }).toList());
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      child: Row(children: <Widget>[
+        CircleAvatar(
+          radius: 20.0, backgroundImage: NetworkImage(_player.photoUrl)),
+        Padding(
+          padding: EdgeInsets.only(right: 4.0),
+        ),
+        Text(_player.name, style: TextStyle(color: Colors.black)),
+      ]));
+  }
+}
 
-    return Material(
-        color: Colors.greenAccent,
-        child: InkWell(
-          child: Card(
-              shape: StadiumBorder(),
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Text("Team X"),
-                    players,
-                    Text(
-                      _score.toString(),
-                      style: TextStyle(fontSize: 50.0),
-                    ),
-                  ])),
-          onTap: _increment,
-          onLongPress: _decrement,
-        ));
+class AddPlayerWidget extends PlayerWidget {
+  AddPlayerWidget(): super(null);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      child: Icon(Icons.add)
+    );
   }
 }
