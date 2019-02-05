@@ -3,17 +3,19 @@ import 'user.dart';
 
 class TeamWidget extends StatefulWidget {
   final List<User> _players;
-  bool _start;
+  final bool _start;
   final String _teamName;
+  final String _assetImage;
 
-  TeamWidget(this._teamName, this._players, this._start);
+  TeamWidget(this._teamName, this._players, this._assetImage, this._start);
 
   @override
   _TeamWidgetState createState() => _TeamWidgetState();
 }
 
 class _TeamWidgetState extends State<TeamWidget> {
-  int _score;
+  int _score = 0;
+  
 
   void _increment() {
     setState(() {
@@ -30,63 +32,39 @@ class _TeamWidgetState extends State<TeamWidget> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    _score = 0;
-  }
-
-  @override
   Widget build(BuildContext context) {
     List<Widget> players = widget._players.map((player) {
         return PlayerWidget(player);
       }
     ).toList();
     
-    Widget card;
-    
     if (!widget._start) {
-      players.add(AddPlayerWidget());
-      
-      card = Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-      children: <Widget>[
-        Text(widget._teamName),
-      ],
-    ),
-              Column(children: players,),
-            ]
-          )
-      );
-    }
-    else {
-      card = InkWell(
-        child: Card(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[Row(
-      children: <Widget>[
-        Text(widget._teamName),
-        Text(
-          _score.toString(),
-          style: TextStyle(fontSize: 50.0),
-        ),
-      ],
-    ),
-              Column(children: players,),
-            ]
-          )
-        ),
-        onTap: _increment,
-        onLongPress: _decrement,
-      );
+      players.add(AddPlayerWidget());  
     }
 
-    return Material(
-      color: Colors.greenAccent,
-      child: card
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: <Widget>[
+        Column(
+          children: <Widget>[
+            Text(widget._teamName, style: TextStyle(fontSize: 25.0)),
+            Text(_score.toString(), style: TextStyle(fontSize: 50.0)),
+            Column (
+              children: players
+            ),
+          ],
+        ),
+        SizedBox(
+          width: MediaQuery.of(context).size.width/3,
+          height: MediaQuery.of(context).size.height/5,
+          child: GestureDetector(
+            onTap: _increment,
+            onLongPress: _decrement,
+            child: Image.asset(widget._assetImage),
+          ) 
+        )
+      ]
     );
   }
 }
@@ -99,7 +77,7 @@ class PlayerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+      padding: EdgeInsets.symmetric(vertical: 4.0),
       child: Row(children: <Widget>[
         CircleAvatar(
           radius: 20.0, backgroundImage: NetworkImage(_player.photoUrl)),
@@ -107,7 +85,8 @@ class PlayerWidget extends StatelessWidget {
           padding: EdgeInsets.only(right: 4.0),
         ),
         Text(_player.name, style: TextStyle(color: Colors.black)),
-      ]));
+      ])
+    );
   }
 }
 

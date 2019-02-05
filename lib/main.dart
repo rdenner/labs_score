@@ -73,19 +73,19 @@ class _HomePageState extends State<HomePage> {
       body:
       Stack(
         children: <Widget>[
-          StreamBuilder<QuerySnapshot>(
-            stream: Firestore.instance.collection('matches').snapshots(),
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-              return new ListView(
-                children: snapshot.data.documents.map((DocumentSnapshot document) {
-                return new ListTile(
-                  title: new Text(document['teams'].toString()),
-                  // subtitle: new Text(document['email']),
-                );
-              }).toList(),
-            );
-            }
-          ),
+          // StreamBuilder<QuerySnapshot>(
+          //   stream: Firestore.instance.collection('matches').snapshots(),
+          //   builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          //     return new ListView(
+          //       children: snapshot.data.documents.map((DocumentSnapshot document) {
+          //       return new ListTile(
+          //         title: new Text(document['teams'].toString()),
+          //         // subtitle: new Text(document['email']),
+          //       );
+          //     }).toList(),
+          //   );
+          //   }
+          // ),
           
       
       Center(

@@ -14,7 +14,7 @@ class _TableTennisPageSate extends State<TableTennisPage> {
           title: Text("Table Tennis"),
         ),
         body: Center(
-          child: Game()
+          child: Game("pong")
         ));
   }
 }

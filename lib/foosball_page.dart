@@ -9,7 +9,7 @@ class FoosballPage extends StatelessWidget {
           title: Text("Foosball"),
         ),
         body: Center(
-            child: Game(),
+            child: Game("foos"),
         )
     );
   }
