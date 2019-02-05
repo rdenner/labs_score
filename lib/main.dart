@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 import 'foosball_page.dart';
 import 'table_tennis_page.dart';
@@ -40,7 +40,7 @@ class LabsScore extends StatelessWidget {
           }),
       routes: {
         '/FoosballPage': (context) => FoosballPage(),
-        '/TableTennisPage': (context) => TableTennisPage()
+        '/TableTennisPage': (context) => TableTennisPage(),
       },
     );
   }

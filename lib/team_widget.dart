@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'user.dart';
 import 'dart:async';
+import 'player_widget.dart';
+import 'select_users_form.dart';
 
 class TeamWidget extends StatefulWidget {
-  final List<User> _players;
   final bool _start;
-  final String _teamName;
   final String _assetImage;
+  final String _team;
 
-  TeamWidget(this._teamName, this._players, this._assetImage, this._start);
+  TeamWidget(this._team, this._assetImage, this._start);
 
   @override
   _TeamWidgetState createState() => _TeamWidgetState();
 }
 
 class _TeamWidgetState extends State<TeamWidget> {
+  List<User> _players;
+  String _teamName;
   int _score = 0;
   String _assetImage, _assetImageStil, _assetImageAnim;
   
@@ -46,22 +49,26 @@ class _TeamWidgetState extends State<TeamWidget> {
   void initState() {    
     super.initState();
 
-    _assetImageStil = widget._assetImage + ".png";
-    _assetImageAnim = widget._assetImage + "Score.png";
+    _assetImageStil = widget._assetImage + widget._team + ".png";
+    _assetImageAnim = widget._assetImage + widget._team + "Score.png";
     _assetImage = _assetImageStil;
+
+    _teamName = "Team " + widget._team;
+
+    _players = new List();
+
   }
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> players = widget._players.map((player) {
-        return PlayerWidget(player);
-      }
-    ).toList();
 
     List<Widget> upper = [
-      Text(widget._teamName, style: TextStyle(fontSize: 25.0)),
+      Text(_teamName, style: TextStyle(fontSize: 25.0)),
       Column (
-        children: players
+        children: _players.map((player) {
+            return PlayerWidget(player);
+          }
+        ).toList()
       ),
     ];
 
@@ -72,7 +79,20 @@ class _TeamWidgetState extends State<TeamWidget> {
     ];
     
     if (!widget._start) {
-      players.add(AddPlayerWidget());
+      upper.add(IconButton(
+        icon: Icon(Icons.add),
+        onPressed: () {
+          Navigator.push(context, MaterialPageRoute(
+            builder: (context) => SelectUsersForm(_players)
+          )).then((players) {
+            if (players != null) {
+              setState(() {
+                _players = players; 
+              });
+            }
+          });
+        },
+      ));
     }
     else {
       upper.insert(
@@ -97,39 +117,6 @@ class _TeamWidgetState extends State<TeamWidget> {
       mainAxisSize: MainAxisSize.max,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: body
-    );
-  }
-}
-
-class PlayerWidget extends StatelessWidget {
-  final User _player;
-
-  PlayerWidget(this._player);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(children: <Widget>[
-        CircleAvatar(
-          radius: 20.0, backgroundImage: NetworkImage(_player.photoUrl)),
-        Padding(
-          padding: EdgeInsets.only(right: 4.0),
-        ),
-        Text(_player.name, style: TextStyle(color: Colors.black)),
-      ])
-    );
-  }
-}
-
-class AddPlayerWidget extends PlayerWidget {
-  AddPlayerWidget(): super(null);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      child: Icon(Icons.add)
     );
   }
 }
