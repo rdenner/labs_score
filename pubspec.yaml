@@ -45,10 +45,14 @@ flutter:
   assets:
    - images/pong.png
    - images/pongA.png
+   - images/pongAScore.png
    - images/pongB.png
+   - images/pongBScore.png
    - images/foos.png
    - images/foosA.png
+   - images/foosAScore.png
    - images/foosB.png
+   - images/foosBScore.png
   #  - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

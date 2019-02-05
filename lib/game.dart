@@ -33,8 +33,8 @@ class _GameState extends State<Game> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            TeamWidget(_teamAName, widget._teamA, "images/" + widget._game + "A.png", _start),
-            TeamWidget(_teamBName, widget._teamB, "images/" + widget._game + "B.png", _start)
+            TeamWidget(_teamAName, widget._teamA, "images/" + widget._game + "A", _start),
+            TeamWidget(_teamBName, widget._teamB, "images/" + widget._game + "B", _start)
           ],
         ),
       ),

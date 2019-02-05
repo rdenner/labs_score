@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'user.dart';
+import 'dart:async';
 
 class TeamWidget extends StatefulWidget {
   final List<User> _players;
@@ -15,11 +16,21 @@ class TeamWidget extends StatefulWidget {
 
 class _TeamWidgetState extends State<TeamWidget> {
   int _score = 0;
+  String _assetImage, _assetImageStil, _assetImageAnim;
   
-
+  
   void _increment() {
+
     setState(() {
+      _assetImage = _assetImageAnim;
       _score++;
+    });
+
+    
+    Timer _timer = new Timer(const Duration(milliseconds: 100), () {
+      setState(() {
+        _assetImage = _assetImageStil;
+      });
     });
   }
 
@@ -32,39 +43,60 @@ class _TeamWidgetState extends State<TeamWidget> {
   }
 
   @override
+  void initState() {    
+    super.initState();
+
+    _assetImageStil = widget._assetImage + ".png";
+    _assetImageAnim = widget._assetImage + "Score.png";
+    _assetImage = _assetImageStil;
+  }
+
+  @override
   Widget build(BuildContext context) {
     List<Widget> players = widget._players.map((player) {
         return PlayerWidget(player);
       }
     ).toList();
+
+    List<Widget> upper = [
+      Text(widget._teamName, style: TextStyle(fontSize: 25.0)),
+      Column (
+        children: players
+      ),
+    ];
+
+    List<Widget> body = [
+      Column(
+        children: upper
+      )
+    ];
     
     if (!widget._start) {
-      players.add(AddPlayerWidget());  
+      players.add(AddPlayerWidget());
     }
+    else {
+      upper.insert(
+        1, 
+        Text(_score.toString(), style: TextStyle(fontSize: 50.0))
+      );
 
-    return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Column(
-          children: <Widget>[
-            Text(widget._teamName, style: TextStyle(fontSize: 25.0)),
-            Text(_score.toString(), style: TextStyle(fontSize: 50.0)),
-            Column (
-              children: players
-            ),
-          ],
-        ),
+      body.add(
         SizedBox(
           width: MediaQuery.of(context).size.width/3,
           height: MediaQuery.of(context).size.height/5,
           child: GestureDetector(
             onTap: _increment,
             onLongPress: _decrement,
-            child: Image.asset(widget._assetImage),
+            child: Image.asset(_assetImage),
           ) 
         )
-      ]
+      );
+    }
+
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: body
     );
   }
 }
