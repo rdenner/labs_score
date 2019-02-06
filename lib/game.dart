@@ -16,20 +16,23 @@ class _GameState extends State<Game> {
   @override
   Widget build(BuildContext context) {
 
-    return 
-    Scaffold(
+    return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
-      body: Padding(
-        padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
-        child: Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TeamWidget("A", "images/" + widget._game, _start),
-            TeamWidget("B", "images/" + widget._game, _start)
-          ],
-        ),
+      body: OrientationBuilder(
+        builder: (BuildContext context, Orientation orientaton){
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 20.0, horizontal: 10.0),
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                TeamWidget("A", "images/" + widget._game, _start, orientaton),
+                TeamWidget("B", "images/" + widget._game, _start, orientaton)
+              ],
+            ),
+          );
+        }
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
@@ -38,7 +41,7 @@ class _GameState extends State<Game> {
             _start = true; 
           });
         },
-      ),
+      )
     );
   }
 }

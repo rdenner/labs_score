@@ -8,8 +8,9 @@ class TeamWidget extends StatefulWidget {
   final bool _start;
   final String _assetImage;
   final String _team;
+  final Orientation _orientation;
 
-  TeamWidget(this._team, this._assetImage, this._start);
+  TeamWidget(this._team, this._assetImage, this._start, this._orientation);
 
   @override
   _TeamWidgetState createState() => _TeamWidgetState();
@@ -61,25 +62,33 @@ class _TeamWidgetState extends State<TeamWidget> {
 
   @override
   Widget build(BuildContext context) {
-
-    List<Widget> upper = [
-      Text(_teamName, style: TextStyle(fontSize: 25.0)),
-      Column (
-        children: _players.map((player) {
-            return PlayerWidget(player);
-          }
-        ).toList()
-      ),
+    List<Widget> head = [
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        child: Text(_teamName, style: TextStyle(fontSize: 25.0)),
+      )
     ];
 
+    double heightMult = (widget._orientation == Orientation.portrait)? 2.5: 3.5;
+
     List<Widget> body = [
-      Column(
-        children: upper
+      (widget._orientation == Orientation.portrait)
+        ? Column(children: head,)
+        : Row(children: head,),
+      SizedBox(
+        height: MediaQuery.of(context).size.height/heightMult,
+        width: MediaQuery.of(context).size.width/2.2,
+        child: ListView (
+          children: _players.map((player) {
+              return ListTile(title: PlayerWidget(player));
+            }
+          ).toList()
+        ),
       )
     ];
     
     if (!widget._start) {
-      upper.add(IconButton(
+      body.add(IconButton(
         icon: Icon(Icons.add),
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(
@@ -95,15 +104,11 @@ class _TeamWidgetState extends State<TeamWidget> {
       ));
     }
     else {
-      upper.insert(
-        1, 
-        Text(_score.toString(), style: TextStyle(fontSize: 50.0))
-      );
+      head.add(Text(_score.toString(), style: TextStyle(fontSize: 50.0)));
 
       body.add(
         SizedBox(
-          width: MediaQuery.of(context).size.width/3,
-          height: MediaQuery.of(context).size.height/5,
+          height: MediaQuery.of(context).size.height/4,
           child: GestureDetector(
             onTap: _increment,
             onLongPress: _decrement,
@@ -114,8 +119,7 @@ class _TeamWidgetState extends State<TeamWidget> {
     }
 
     return Column(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: body
     );
   }
