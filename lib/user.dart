@@ -19,4 +19,14 @@ class User {
     this.photoUrl = map['photoUrl'];
     this.uid = map['uid'];
   }
+
+  static Map<String, dynamic> getMap(User user) {
+    var map = new Map<String, dynamic>();
+      map['name'] = user.name;
+      map['email'] = user.email;
+      map['photoUrl'] = user.photoUrl;
+      map['uid'] = user.uid;
+
+      return map;
+  }
 }

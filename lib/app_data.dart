@@ -49,12 +49,12 @@ class AppData {
         _firebaseUser.photoUrl, _firebaseUser.uid);
   }
 
-  Stream<QuerySnapshot> getUserFromDb(String uid) {
+  Stream<DocumentSnapshot> getUserFromDb(String uid) {
     print("Getting user " + uid + " from Db");
 
     return Firestore.instance
         .collection("users")
-        .where("uid", isEqualTo: uid)
+        .document(uid)
         .snapshots();
   }
 
@@ -66,34 +66,20 @@ class AppData {
 
   Future<void> addUserToDb(User user) async {
     print("Add user " + user.name);
-    Stream<QuerySnapshot> snapshots = AppData.appData.getUserFromDb(user.uid);
+    
+    final TransactionHandler createTransaction = (Transaction tx) async {
 
-    snapshots.listen((QuerySnapshot snapshot) {
-      List<User> users = snapshot.documents
-          .map((documentSnapshot) => User.fromMap(documentSnapshot.data))
-          .toList();
+      final DocumentSnapshot ds =
+          await tx.get(Firestore.instance.collection('users').document(user.uid));
 
-      if (users.length > 1) {
-        print("Too many users with same id");
-        throw Exception();
-      } else if (users.isEmpty) {
-        print("Can add user, because user not found");
-        final TransactionHandler createTransaction = (Transaction tx) async {
-          final DocumentSnapshot ds =
-              await tx.get(Firestore.instance.collection('users').document());
-          var dataMap = new Map<String, dynamic>();
-          dataMap['name'] = user.name;
-          dataMap['email'] = user.email;
-          dataMap['photoUrl'] = user.photoUrl;
-          dataMap['uid'] = user.uid;
+      var map = User.getMap(user);
 
-          await tx.set(ds.reference, dataMap);
+      await tx.set(ds.reference, map);
 
-          return dataMap;
-        };
+      return map;
+    };
 
-        Firestore.instance.runTransaction(createTransaction);
-      }
-    });
+    Firestore.instance.runTransaction(createTransaction);
+      
   }
 }
