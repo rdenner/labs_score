@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
 
-import 'foosball_page.dart';
-import 'table_tennis_page.dart';
+import 'game.dart';
 import 'app_data.dart';
 import 'user.dart';
 
@@ -38,10 +37,6 @@ class LabsScore extends StatelessWidget {
                 ),
               );
           }),
-      routes: {
-        '/FoosballPage': (context) => FoosballPage(),
-        '/TableTennisPage': (context) => TableTennisPage(),
-      },
     );
   }
 }
@@ -56,11 +51,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   void openFoosball() {
-    Navigator.pushNamed(context, '/FoosballPage');
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => Game("foos")
+    ));
   }
 
   void openTableTennis() {
-    Navigator.pushNamed(context, '/TableTennisPage');
+    Navigator.push(context, MaterialPageRoute(
+      builder: (context) => Game("pong")
+    ));
   }
 
   @override

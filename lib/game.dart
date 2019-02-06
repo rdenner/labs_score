@@ -18,6 +18,13 @@ class _GameState extends State<Game> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
+      appBar: AppBar(
+        title: (widget._game == "foos")? Text("Foosball"): Text("Ping Pong"),
+        actions: <Widget>[ (!_start)? Container(): IconButton(
+          icon: Icon(Icons.check_circle, color: Theme.of(context).accentColor,),
+          onPressed: () {Navigator.pop(context);},
+        ),],
+      ),
       body: OrientationBuilder(
         builder: (BuildContext context, Orientation orientaton){
           return Padding(
@@ -34,7 +41,7 @@ class _GameState extends State<Game> {
           );
         }
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: (!_start)? FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: () {
           setState(() {
@@ -42,6 +49,7 @@ class _GameState extends State<Game> {
           });
         },
       )
+      : Container()
     );
   }
 }
